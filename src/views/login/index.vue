@@ -27,7 +27,9 @@ export default {
     };
   },
   watch: {},
-  methods: {}
+  methods: {
+    handleClick() {}
+  }
 };
 </script>
 
