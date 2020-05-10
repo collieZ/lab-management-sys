@@ -2,6 +2,7 @@
   <div class="container">
     <div class="main-area">
       <el-card shadow="always">
+        <div class="sys-title">407实验室管理系统</div>
         <el-tabs v-model="activeTab" stretch @tab-click="handleClick">
           <el-tab-pane label="用户登录" name="login">
             <login />
@@ -46,6 +47,13 @@ export default {
     padding: 60px 35px 0;
     margin: 0 auto;
     overflow: hidden;
+    .sys-title {
+      color: #509678a9;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      padding: 8px 10px;
+    }
   }
 }
 </style>
