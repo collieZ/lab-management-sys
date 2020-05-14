@@ -53,7 +53,7 @@
       <!-- <div class="tips">
         <span style="margin-right:20px;">username: admin</span>
         <span>password: any</span>
-      </div> -->
+      </div>-->
     </el-form>
   </div>
 </template>
@@ -80,13 +80,11 @@ export default {
     };
     return {
       loginForm: {
-        username: "11111111111",
-        password: "zl1234"
+        username: "",
+        password: ""
       },
       loginRules: {
-        username: [
-          { required: true, trigger: "blur" }
-        ],
+        username: [{ required: true, trigger: "blur" }],
         password: [
           { required: true, trigger: "blur", validator: validatePassword }
         ]

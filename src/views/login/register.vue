@@ -53,6 +53,7 @@
           :type="passwordType"
           placeholder="密码"
           name="password"
+          auto-complete="new-password"
           @keyup.enter.native="handleRegister"
         />
         <!-- <span class="show-pwd" @click="showPwd">
