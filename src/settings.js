@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'future props lab',
+  title: '407实验室管理系统',
 
   /**
    * @type {boolean} true | false

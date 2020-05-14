@@ -7,7 +7,9 @@
           <el-tab-pane label="用户登录" name="login">
             <login />
           </el-tab-pane>
-          <el-tab-pane label="用户注册" name="register">用户注册</el-tab-pane>
+          <el-tab-pane label="用户注册" name="register">
+            <register @sw-login="activeTab = 'login'" />
+          </el-tab-pane>
         </el-tabs>
       </el-card>
     </div>
@@ -16,10 +18,12 @@
 
 <script>
 import login from "./login";
+import register from "./register";
 export default {
   name: "WelcomePage",
   components: {
-    login
+    login,
+    register
   },
   data() {
     return {

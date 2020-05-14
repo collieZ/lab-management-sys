@@ -11,9 +11,17 @@ export function login(data) {
 
 export function getInfo(token) {
   return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
+    url: '/user/detail',
+    method: 'get'
+    // params: { token }
+  })
+}
+
+export function regiter(data) {
+  return request({
+    url: '/user/signup',
+    method: 'post',
+    data: Qs.stringify(data)
   })
 }
 
