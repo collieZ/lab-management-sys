@@ -2,7 +2,7 @@
   <div class="user-container">
     <el-card shadow="always" style="min-height: 320px;">
       <el-tabs :tab-position="tabPosition" style="height: 100%">
-        <el-tab-pane v-for="p of tabPaneList" :key="p" v-permission="p.acl" :label="p.label">
+        <el-tab-pane v-for="p of tabPaneList" :key="p.label" v-permission="p.acl" :label="p.label">
           <div style="margin: 10px 10px;">
             <el-table :data="tableData" border style="width: 100%;">
               <el-table-column
