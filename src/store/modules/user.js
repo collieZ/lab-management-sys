@@ -7,7 +7,8 @@ const getDefaultState = () => {
     token: getToken(),
     name: '',
     avatar: '',
-    userInfo: null
+    userInfo: null,
+    roles: []
   }
 }
 
@@ -25,6 +26,9 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles
   },
   SET_USERINFO: (state, userInfo) => {
     state.userInfo = userInfo
@@ -59,9 +63,15 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { Name, avatar } = data
+        const { Name, avatar, acl } = data
+        // roles must be a non-empty array
+        if (!acl || acl.length <= 0) {
+          reject('getInfo: acl must be a non-null array!')
+        }
 
+        console.log(data, 'user');
         commit('SET_NAME', Name)
+        commit('SET_ROLES', acl)
         commit('SET_AVATAR', avatar || 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
         commit('SET_USERINFO', data)
         resolve(data)
@@ -75,8 +85,9 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       removeToken() // must remove  token  first
-      resetRouter()
       commit('RESET_STATE')
+      commit('SET_ROLES', [])
+      resetRouter()
       resolve()
       // logout(state.token).then(() => {
       // }).catch(error => {
@@ -90,6 +101,7 @@ const actions = {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
       commit('RESET_STATE')
+      commit('SET_ROLES', [])
       resolve()
     })
   }
