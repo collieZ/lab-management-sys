@@ -10,7 +10,7 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login'] // no redirect whitelist
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
   // set page title
@@ -32,7 +32,7 @@ router.beforeEach(async (to, from, next) => {
       } else {
         try {
           // get user info
-          const { acl } = await store.dispatch('user/getInfo')
+          // const { acl } = await store.dispatch('user/getInfo');
 
           // // generate accessible routes map based on roles
           // const accessRoutes = await store.dispatch('permission/generateRoutes', acl)
@@ -40,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
           // // dynamically add accessible routes
           // router.addRoutes(accessRoutes)
 
-          next({ ...to, replace: true })
+          next()
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
