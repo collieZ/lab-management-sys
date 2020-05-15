@@ -2,7 +2,7 @@
   <div class="user-container">
     <el-card shadow="always">
       <el-tabs :tab-position="tabPosition" style="height: auto">
-        <el-tab-pane v-for="p of tabPaneList" :key="p" :label="p">用户管理</el-tab-pane>
+        <el-tab-pane v-permission="['admin']" v-for="p of tabPaneList" :key="p" :label="p">用户管理</el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
