@@ -25,10 +25,11 @@ export function regiter(data) {
   })
 }
 
-export function regiterApply() { // 查看申请列表
+export function regiterApply(params = {}) { // 查看申请列表
   return request({
     url: '/admin/audit',
-    method: 'get'
+    method: 'get',
+    params
   })
 }
 

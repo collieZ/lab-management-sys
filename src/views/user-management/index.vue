@@ -15,12 +15,23 @@
               />
               <el-table-column fixed="right" label="操作" width="150">
                 <template slot-scope="scope">
-                  <el-button size="small" type="text" @click="handleClick(scope.row)">查看</el-button>
-                  <el-button type="text" size="small">编辑</el-button>
+                  <el-button
+                    size="small"
+                    type="text"
+                    @click="handleClick('dealApply' ,scope.row)"
+                  >处理申请</el-button>
+                  <el-button type="text" size="small" @click="handleClick('delete' ,scope.row)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
-            <el-pagination style="text-align: right; margin-top: 10px;" background layout="prev, pager, next" :total="100" />
+            <el-pagination
+              style="text-align: right; margin-top: 10px;"
+              background
+              layout="prev, pager, next"
+              :current-page.sync="page.current_page"
+              :total="page.total"
+              @current-change="getRegiterApplyList"
+            />
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -81,18 +92,45 @@ export default {
           fixed: false
         }
       ],
-      tableData: []
+      tableData: [],
+      page: {
+        current_page: 1, // page
+        total: 100
+        // max_page: ''
+      }
     };
   },
   mounted() {
     this.getRegiterApplyList();
   },
   methods: {
+    handleClick(type, row) {
+      switch (type) {
+        case "dealApply":
+          break;
+        case "delete":
+          break;
+      }
+    },
+    /**
+     * 查询申请列表
+     */
     getRegiterApplyList() {
-      regiterApply().then(res => {
-        console.log(res, "apply list");
+      const PARAMS = {
+        page: this.page.current_page,
+        pageSize: 10, // 默认每页10条
+        name: "",
+        student_number: ""
+      };
+      regiterApply(PARAMS).then(res => {
+        this.tableData = res.data;
+        this.page = { ...this.page, ...res };
       });
     }
+    // onPageChange(page) {
+    //   console.log(this.page.current_page, "page");
+    //   this.getRegiterApplyList();
+    // }
   }
 };
 </script>
