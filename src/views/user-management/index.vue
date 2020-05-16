@@ -20,6 +20,7 @@
                 </template>
               </el-table-column>
             </el-table>
+            <el-pagination style="text-align: right; margin-top: 10px;" background layout="prev, pager, next" :total="100" />
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+import { regiterApply } from "@/api/user";
 export default {
   name: "UserManagement",
   data() {
@@ -81,6 +83,16 @@ export default {
       ],
       tableData: []
     };
+  },
+  mounted() {
+    this.getRegiterApplyList();
+  },
+  methods: {
+    getRegiterApplyList() {
+      regiterApply().then(res => {
+        console.log(res, "apply list");
+      });
+    }
   }
 };
 </script>

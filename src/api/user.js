@@ -25,6 +25,13 @@ export function regiter(data) {
   })
 }
 
+export function regiterApply() { // 查看申请列表
+  return request({
+    url: '/admin/audit',
+    method: 'get'
+  })
+}
+
 export function logout() {
   return request({
     url: '/vue-admin-template/user/logout',
