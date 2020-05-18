@@ -36,16 +36,36 @@
         </el-tab-pane>
       </el-tabs>
     </el-card>
+    <el-dialog
+      :title="dialogTitle"
+      :visible.sync="dialogVisible"
+      destroy-on-close
+      :close-on-click-modal="false"
+    >
+      <div class="apply">
+        <h4 style="margin: 0 0 20px 0;">是否同意申请?</h4>
+        <el-radio v-model="aggreApply" label="Y">同意</el-radio>
+        <el-radio v-model="aggreApply" label="N">拒绝</el-radio>
+        <div style="margin: 10px 0 0 0; text-align: right;">
+          <el-button type="primary" :loading="applyLoading" @click="handleAgreeApply">确定</el-button>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { regiterApply } from "@/api/user";
+import { regiterApply, agreeApply, login } from "@/api/user";
 export default {
   name: "UserManagement",
   data() {
     return {
+      dialogTitle: "处理申请",
+      dialogVisible: false,
       tabPosition: "left",
+      // apply
+      aggreApply: "",
+      applyLoading: false,
       tabPaneList: [
         {
           label: "用户注册管理",
@@ -93,6 +113,7 @@ export default {
         }
       ],
       tableData: [],
+      currentRow: {},
       page: {
         current_page: 1, // page
         total: 100
@@ -105,8 +126,15 @@ export default {
   },
   methods: {
     handleClick(type, row) {
+      this.currentRow = row;
       switch (type) {
         case "dealApply":
+          const PARAMS = {
+            student_number: row.Student_Number,
+            agree: "Y"
+          };
+          this.dialogVisible = true;
+          console.log(row, "Student_Number");
           break;
         case "delete":
           break;
@@ -126,6 +154,27 @@ export default {
         this.tableData = res.data;
         this.page = { ...this.page, ...res };
       });
+    },
+    handleAgreeApply() {
+      this.applyLoading = true;
+      const PARAMS = {
+        student_number: this.currentRow.Student_Number,
+        agree: this.aggreApply
+      };
+      agreeApply(PARAMS)
+        .then(res => {
+          this.$message({
+            type: "success",
+            message: res.msg || "处理成功"
+          });
+          this.getRegiterApplyList();
+          this.dialogVisible = false;
+        })
+        .finally(() => {
+          this.applyLoading = false;
+          this.dialogVisible = false;
+          this.aggreApply = ''
+        });
     }
     // onPageChange(page) {
     //   console.log(this.page.current_page, "page");
