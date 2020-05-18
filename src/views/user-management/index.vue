@@ -158,6 +158,9 @@ export default {
         this.page = { ...this.page, ...res };
       });
     },
+    /**
+     * 处理申请 注册｜加入的人员
+     */
     handleAgreeApply() {
       this.applyLoading = true;
       const PARAMS = {
