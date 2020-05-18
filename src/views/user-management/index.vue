@@ -11,14 +11,14 @@
                 :fixed="c.fixed"
                 :prop="c.value"
                 :label="c.label"
-                :width="c.width || 120"
+                :width="c.width || 'auto'"
               />
               <el-table-column fixed="right" label="操作" width="150">
                 <template slot-scope="scope">
                   <el-button
                     size="small"
                     type="text"
-                    @click="handleClick('dealApply' ,scope.row)"
+                    @click="dialogVisible = true"
                   >处理申请</el-button>
                   <el-button type="text" size="small" @click="handleClick('delete' ,scope.row)">删除</el-button>
                 </template>
@@ -84,31 +84,31 @@ export default {
         {
           label: "姓名",
           value: "Name",
-          width: 120,
+          // width: 120,
           fixed: false
         },
         {
           label: "学号",
           value: "Student_Number",
-          width: 120,
+          // width: 120,
           fixed: false
         },
         {
           label: "专业",
           value: "Major",
-          width: 120,
+          // width: 120,
           fixed: false
         },
         {
           label: "年级",
           value: "Enrollment_Year",
-          width: 120,
+          // width: 120,
           fixed: false
         },
         {
           label: "性别",
           value: "Sex",
-          width: 120,
+          // width: 120,
           fixed: false
         }
       ],
@@ -128,14 +128,9 @@ export default {
     handleClick(type, row) {
       this.currentRow = row;
       switch (type) {
-        case "dealApply":
-          const PARAMS = {
-            student_number: row.Student_Number,
-            agree: "Y"
-          };
-          this.dialogVisible = true;
-          console.log(row, "Student_Number");
-          break;
+        // case "dealApply":
+        //   this.dialogVisible = true;
+        //   break;
         case "delete":
           break;
       }
