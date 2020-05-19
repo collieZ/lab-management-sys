@@ -15,8 +15,27 @@
               />
               <el-table-column fixed="right" label="操作" width="150">
                 <template slot-scope="scope">
-                  <el-button size="small" type="text" @click="dialogVisible = true">处理申请</el-button>
-                  <el-button type="text" size="small" @click="handleClick('delete' ,scope.row)">删除</el-button>
+                  <el-button
+                    v-if="currentTab === '用户注册管理'"
+                    v-permission="['super_admin', 'admin']"
+                    size="small"
+                    type="text"
+                    @click="dialogVisible = true; currentRow = scope.row;"
+                  >处理申请</el-button>
+                  <el-button
+                    v-if="currentTab === '管理员管理'"
+                    v-permission="['super_admin']"
+                    size="small"
+                    type="text"
+                    @click="dialogVisible = true; currentRow = scope.row; scope.row.Admin === '成员' ? setManager = 'N' : setManager = 'Y'"
+                  >设置管理员</el-button>
+                  <el-button
+                    v-if="currentTab === '成员管理'"
+                    v-permission="['super_admin', 'admin']"
+                    type="text"
+                    size="small"
+                    @click="handleClick('delete' ,scope.row)"
+                  >删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -26,7 +45,7 @@
               layout="prev, pager, next"
               :current-page.sync="page.current_page"
               :total="page.total"
-              @current-change="getRegiterApplyList"
+              @current-change="onPageChange"
             />
           </div>
         </el-tab-pane>
@@ -38,7 +57,7 @@
       destroy-on-close
       :close-on-click-modal="false"
     >
-      <div class="apply">
+      <div class="apply" v-if="currentTab === '用户注册管理'">
         <h4 style="margin: 0 0 20px 0;">是否同意申请?</h4>
         <el-radio v-model="aggreApply" label="Y">同意</el-radio>
         <el-radio v-model="aggreApply" label="N">拒绝</el-radio>
@@ -46,12 +65,26 @@
           <el-button type="primary" :loading="applyLoading" @click="handleAgreeApply">确定</el-button>
         </div>
       </div>
+      <div v-if="currentTab === '管理员管理'">
+        <h4 style="margin: 0 0 20px 0;">选择是否设置为管理员？</h4>
+        <el-radio v-model="setManager" label="Y">是</el-radio>
+        <el-radio v-model="setManager" label="N">否</el-radio>
+        <div style="margin: 10px 0 0 0; text-align: right;">
+          <el-button type="primary" :loading="setManagerLoading" @click="handleSetManager">确定</el-button>
+        </div>
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { regiterApply, agreeApply, login } from "@/api/user";
+import {
+  regiterApply,
+  agreeApply,
+  getMemberList,
+  manageAdmin,
+  delMember
+} from "@/api/user";
 export default {
   name: "UserManagement",
   data() {
@@ -63,6 +96,9 @@ export default {
       // apply
       aggreApply: "",
       applyLoading: false,
+      // set manege
+      setManager: "",
+      setManagerLoading: false,
       tabPaneList: [
         {
           label: "用户注册管理",
@@ -81,6 +117,12 @@ export default {
         {
           label: "姓名",
           value: "Name",
+          // width: 120,
+          fixed: false
+        },
+        {
+          label: "角色",
+          value: "Admin",
           // width: 120,
           fixed: false
         },
@@ -129,18 +171,50 @@ export default {
         //   this.dialogVisible = true;
         //   break;
         case "delete":
+          this.$confirm("此操作将删除该成员, 是否继续?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
+              delMember({ student_number: row.Student_Number }).then(res => {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.getMemberList('member')
+              });
+            })
+            .catch(() => {
+              this.$message({
+                type: "info",
+                message: "已取消删除"
+              });
+            });
+
           break;
       }
     },
     onTabChange(tab) {
-      console.log(tab);
       this.currentTab = tab.label;
       this.tableData = [];
-      this.page.current_page = 1
+      this.page.current_page = 1;
       if (this.currentTab === "用户注册管理") {
         this.getRegiterApplyList();
       } else if (this.currentTab === "管理员管理") {
+        this.getMemberList(); // 获取全部过滤超级管理员
       } else {
+        this.getMemberList("member"); // 获取成员
+      }
+    },
+    onPageChange(page) {
+      console.log(this.page.current_page, "page");
+      if (this.currentTab === "用户注册管理") {
+        this.getRegiterApplyList();
+      } else if (this.currentTab === "管理员管理") {
+        this.getMemberList(); // 获取全部过滤超级管理员
+      } else {
+        this.getMemberList("member"); // 获取成员
       }
     },
     /**
@@ -181,11 +255,58 @@ export default {
           this.dialogVisible = false;
           this.aggreApply = "";
         });
+    },
+    /**
+     * 处理 是否设置为管理员
+     */
+    handleSetManager() {
+      this.setManagerLoading = true;
+      const PARAMS = {
+        student_number: this.currentRow.Student_Number,
+        setting: this.setManager
+      };
+      manageAdmin(PARAMS)
+        .then(res => {
+          this.$message({
+            type: "success",
+            message: res.msg || "设置成功"
+          });
+          this.getMemberList();
+          this.dialogVisible = false;
+        })
+        .finally(() => {
+          this.setManagerLoading = false;
+          this.dialogVisible = false;
+          this.setManager = "";
+        });
+    },
+    /**
+     * 获取成员列表，根据当前tab过滤
+     */
+    getMemberList(role = "all") {
+      const PARAMS = {
+        role,
+        page: this.page.current_page,
+        pageSize: 10 // 默认每页10条
+      };
+      getMemberList(PARAMS).then(res => {
+        if (role === "all") {
+          let tempData = res.data.filter(u => {
+            return u.Admin !== "超级管理员";
+          });
+          this.tableData = tempData;
+          this.page = {
+            ...this.page,
+            ...res,
+            total: res.total - (res.data.length - tempData.length)
+          };
+          console.log(this.page);
+        } else {
+          this.tableData = res.data;
+          this.page = { ...this.page, ...res };
+        }
+      });
     }
-    // onPageChange(page) {
-    //   console.log(this.page.current_page, "page");
-    //   this.getRegiterApplyList();
-    // }
   }
 };
 </script>

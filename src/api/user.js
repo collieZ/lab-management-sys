@@ -41,9 +41,44 @@ export function agreeApply(data) {  // 同意/取消申请
   })
 }
 
+/**
+ * 获取成员列表，带权限
+ * @param {object} role: all,member,admin,super_admin
+ */
+export function getMemberList(params = { role: 'all' }) {
+  return request({
+    url: '/admin/members',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * 设置/取消管理员
+ */
+export function manageAdmin(data) {
+  return request({
+    url: '/admin/setting',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
+/**
+ * 删除选中成员
+ */
+export function delMember(data) {
+  return request({
+    url: '/admin/delete_member',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
 export function logout() {
   return request({
     url: '/vue-admin-template/user/logout',
     method: 'post'
   })
 }
+
