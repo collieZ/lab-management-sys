@@ -75,6 +75,16 @@ export function delMember(data) {
   })
 }
 
+/**
+ * 获取用户记录打卡时长
+ */
+export function getUserRecode() {
+  return request({
+    url: '/user/records',
+    method: 'get'
+  })
+}
+
 export function logout() {
   return request({
     url: '/vue-admin-template/user/logout',

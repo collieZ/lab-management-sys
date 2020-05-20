@@ -83,7 +83,8 @@ import {
   agreeApply,
   getMemberList,
   manageAdmin,
-  delMember
+  delMember,
+  getUserRecode
 } from "@/api/user";
 export default {
   name: "UserManagement",
@@ -162,6 +163,9 @@ export default {
   },
   mounted() {
     this.getRegiterApplyList();
+    getUserRecode().then(res => {
+      console.log(res, 'recoe');
+    })
   },
   methods: {
     handleClick(type, row) {
@@ -291,7 +295,7 @@ export default {
       };
       getMemberList(PARAMS).then(res => {
         if (role === "all") {
-          let tempData = res.data.filter(u => {
+          const tempData = res.data.filter(u => {
             return u.Admin !== "超级管理员";
           });
           this.tableData = tempData;
