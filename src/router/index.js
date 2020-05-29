@@ -65,7 +65,17 @@ export const constantRoutes = [
       meta: { title: '人员管理', icon: 'user' }
     }]
   },
-
+  {
+    path: '/rank',
+    component: Layout,
+    // redirect: '/dashboard',
+    children: [{
+      path: 'rank',
+      name: 'rank',
+      component: () => import('@/views/learn-time-rank/index'),
+      meta: { title: '学习时长排名', icon: 'tree' }
+    }]
+  },
   // {
   //   path: '/example',
   //   component: Layout,

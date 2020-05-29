@@ -83,8 +83,7 @@ import {
   agreeApply,
   getMemberList,
   manageAdmin,
-  delMember,
-  getUserRecode
+  delMember
 } from "@/api/user";
 export default {
   name: "UserManagement",
@@ -163,9 +162,6 @@ export default {
   },
   mounted() {
     this.getRegiterApplyList();
-    getUserRecode().then(res => {
-      console.log(res, 'recoe');
-    })
   },
   methods: {
     handleClick(type, row) {
@@ -212,7 +208,7 @@ export default {
       }
     },
     onPageChange(page) {
-      console.log(this.page.current_page, "page");
+      // console.log(this.page.current_page, "page");
       if (this.currentTab === "用户注册管理") {
         this.getRegiterApplyList();
       } else if (this.currentTab === "管理员管理") {
