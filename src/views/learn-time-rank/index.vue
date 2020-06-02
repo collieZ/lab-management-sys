@@ -3,7 +3,12 @@
     <el-card shadow="always" style="min-height: 320px;">
       <div style="margin: 10px 10px;">
         <div class="btn-area">
-          <el-button style="margin: 10px 0 10px 0" type="primary" size="small" @click="handleClick('myDetail', $event)">我的记录</el-button>
+          <el-button
+            style="margin: 10px 0 10px 0"
+            type="primary"
+            size="small"
+            @click="handleClick('myDetail', $event)"
+          >我的记录</el-button>
         </div>
         <el-table :data="tableData" border style="width: 100%;">
           <el-table-column
@@ -20,7 +25,7 @@
                 v-permission="['super_admin', 'admin']"
                 size="small"
                 type="text"
-                @click="dialogVisible = true; currentRow = scope.row;"
+                @click="handleClick('detail', scope.row)"
               >详情</el-button>
             </template>
           </el-table-column>
@@ -39,7 +44,7 @@
 </template>
 
 <script>
-import { rankList } from "@/api/rank";
+import { rankList, getUserDetal } from "@/api/rank";
 import { getUserRecode } from "@/api/user";
 export default {
   name: "LearnTimeRank",
@@ -88,7 +93,11 @@ export default {
       this.currentRow = row;
       switch (type) {
         case "myDetail":
-          this.getUserRecodeDetail()
+          this.getUserRecodeDetail();
+          break;
+        case "detail":
+          this.getTheUserRecordDetail()
+          this.dialogVisible = true;
           break;
       }
     },
@@ -100,14 +109,18 @@ export default {
         page: this.page.current_page,
         pageSize: 10 // 默认每页10条
       };
-      const rank = await rankList(PARAMS);
-      this.tableData = rank.data;
-      this.page = { ...this.page, ...rank };
-      console.log(rank);
+      const res = await rankList(PARAMS);
+      this.tableData = res.data;
+      this.page = { ...this.page, ...res };
+      console.log(res);
     },
     async getUserRecodeDetail() {
-      const record = await getUserRecode();
-      console.log(record, "recode");
+      const res = await getUserRecode();
+      console.log(res, "recode");
+    },
+    async getTheUserRecordDetail(id) {
+      const res = await getUserDetal({ student_number: id });
+      console.log(res);
     }
   }
 };
