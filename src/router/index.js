@@ -59,7 +59,7 @@ export const constantRoutes = [
     component: Layout,
     // redirect: '/dashboard',
     children: [{
-      path: 'userManage',
+      path: 'userlist',
       name: 'userManage',
       component: () => import('@/views/user-management/index'),
       meta: { title: '人员管理', icon: 'user' }
@@ -70,7 +70,7 @@ export const constantRoutes = [
     component: Layout,
     // redirect: '/dashboard',
     children: [{
-      path: 'rank',
+      path: 'ranktime',
       name: 'rank',
       component: () => import('@/views/learn-time-rank/index'),
       meta: { title: '学习时长排名', icon: 'tree' }
@@ -179,7 +179,18 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-
+  {
+    path: '/user',
+    component: Layout,
+    // redirect: '/changepw/index',
+    hidden: true,
+    children: [{
+      path: 'changepw',
+      name: 'Changepw',
+      component: () => import('@/views/change-pw/index'),
+      meta: { title: '修改密码', icon: 'user', noCache: true }
+    }]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

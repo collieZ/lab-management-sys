@@ -96,7 +96,7 @@ export default {
           this.getUserRecodeDetail();
           break;
         case "detail":
-          this.getTheUserRecordDetail()
+          this.getTheUserRecordDetail(row.Student_Number)
           this.dialogVisible = true;
           break;
       }

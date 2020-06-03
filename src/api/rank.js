@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import Qs from 'qs';
+// import Qs from 'qs';
 
 export function rankList(data) {
   return request({
@@ -9,10 +9,10 @@ export function rankList(data) {
   })
 }
 
-export function getUserDetal(data) {
+export function getUserDetal(params) {
   return request({
     url: '/admin/records',
-    method: 'post',
-    data: Qs.stringify(data)
+    method: 'get',
+    params
   })
 }
