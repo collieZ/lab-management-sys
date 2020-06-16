@@ -1,7 +1,7 @@
 <template>
   <div class="user-container">
     <el-card shadow="always" style="min-height: 320px;">
-      <el-tabs :tab-position="tabPosition" @tab-click="onTabChange" style="height: 100%">
+      <el-tabs :tab-position="tabPosition" style="height: 100%" @tab-click="onTabChange">
         <el-tab-pane v-for="p of tabPaneList" :key="p.label" v-permission="p.acl" :label="p.label">
           <div style="margin: 10px 10px;">
             <el-table :data="tableData" border style="width: 100%;">
@@ -57,7 +57,7 @@
       destroy-on-close
       :close-on-click-modal="false"
     >
-      <div class="apply" v-if="currentTab === '用户注册管理'">
+      <div v-if="currentTab === '用户注册管理'" class="apply">
         <h4 style="margin: 0 0 20px 0;">是否同意申请?</h4>
         <el-radio v-model="aggreApply" label="Y">同意</el-radio>
         <el-radio v-model="aggreApply" label="N">拒绝</el-radio>
@@ -182,7 +182,7 @@ export default {
                   type: "success",
                   message: "删除成功!"
                 });
-                this.getMemberList('member')
+                this.getMemberList("member");
               });
             })
             .catch(() => {

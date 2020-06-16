@@ -85,6 +85,15 @@ export function getUserRecode() {
   })
 }
 
+/**
+ * 修改密码
+ * @param {*} data
+ */
+export const updatePwd = async(data) => {
+  const res = await request({ url: '/user/update_password', method: 'post', data: Qs.stringify(data) })
+  return res
+}
+
 export function logout() {
   return request({
     url: '/vue-admin-template/user/logout',
