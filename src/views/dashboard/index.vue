@@ -1,20 +1,28 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
+    <el-button type="primary" @click="enterMcu">录入门禁</el-button>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
+import { mapGetters } from "vuex";
+import { enterMcu } from "@/api/user";
 export default {
-  name: 'Dashboard',
+  name: "Dashboard",
+  data() {
+    return {};
+  },
   computed: {
-    ...mapGetters([
-      'name'
-    ])
+    ...mapGetters(["name"])
+  },
+  methods: {
+    async enterMcu() {
+      const res = await enterMcu()
+      console.log(res, 'bind');
+    }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

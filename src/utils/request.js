@@ -69,6 +69,13 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
+      if (res.msg) {
+        Message({
+          message: res.msg || 'Error',
+          type: 'success',
+          duration: 1 * 1500
+        })
+      }
       return res.result // 如果是200取到result中的数据
     }
   },

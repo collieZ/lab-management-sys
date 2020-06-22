@@ -33,7 +33,7 @@ export function regiterApply(params = {}) { // 查看申请列表
   })
 }
 
-export function agreeApply(data) {  // 同意/取消申请
+export function agreeApply(data) { // 同意/取消申请
   return request({
     url: '/admin/audit',
     method: 'post',
@@ -92,6 +92,13 @@ export function getUserRecode() {
 export const updatePwd = async(data) => {
   const res = await request({ url: '/user/update_password', method: 'post', data: Qs.stringify(data) })
   return res
+}
+
+export const enterMcu = () => {
+  return request({
+    url: '/user/bind',
+    method: 'get'
+  })
 }
 
 export function logout() {

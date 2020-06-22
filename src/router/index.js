@@ -76,6 +76,19 @@ export const constantRoutes = [
       meta: { title: '学习时长排名', icon: 'tree' }
     }]
   },
+  {
+    path: '/device',
+    component: Layout,
+    // redirect: '/dashboard',
+    children: [{
+      path: 'deviceManage',
+      name: 'device',
+      component: () => import('@/views/device-management/index'),
+      meta: {
+        title: '器材管理', icon: 'nested'
+      }
+    }]
+  },
   // {
   //   path: '/example',
   //   component: Layout,
