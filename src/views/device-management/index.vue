@@ -32,14 +32,14 @@ export default {
     return {
       defaultColumn: [
         {
-          label: "数量",
-          value: "Count",
+          label: "名称",
+          value: "Name",
           // width: 120,
           fixed: false
         },
         {
-          label: "名称",
-          value: "Name",
+          label: "数量",
+          value: "Count",
           // width: 120,
           fixed: false
         },
